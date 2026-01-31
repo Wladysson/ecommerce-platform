@@ -13,7 +13,7 @@ export const createCheckoutSession = async (req, res) => {
 		let totalAmount = 0;
 
 		const lineItems = products.map((product) => {
-			const amount = Math.round(product.price * 100); // stripe wants u to send in the format of cents
+			const amount = Math.round(product.price * 100); 
 			totalAmount += amount * product.quantity;
 
 			return {
@@ -91,7 +91,6 @@ export const checkoutSuccess = async (req, res) => {
 				);
 			}
 
-			// create a new Order
 			const products = JSON.parse(session.metadata.products);
 			const newOrder = new Order({
 				user: session.metadata.userId,
@@ -100,7 +99,7 @@ export const checkoutSuccess = async (req, res) => {
 					quantity: product.quantity,
 					price: product.price,
 				})),
-				totalAmount: session.amount_total / 100, // convert from cents to dollars,
+				totalAmount: session.amount_total / 100, 
 				stripeSessionId: sessionId,
 			});
 
@@ -133,7 +132,7 @@ async function createNewCoupon(userId) {
 	const newCoupon = new Coupon({
 		code: "GIFT" + Math.random().toString(36).substring(2, 8).toUpperCase(),
 		discountPercentage: 10,
-		expirationDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days from now
+		expirationDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), 
 		userId: userId,
 	});
 
