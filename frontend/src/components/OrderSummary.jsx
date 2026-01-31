@@ -41,12 +41,12 @@ const OrderSummary = () => {
 			animate={{ opacity: 1, y: 0 }}
 			transition={{ duration: 0.5 }}
 		>
-			<p className='text-xl font-semibold text-emerald-400'>Order summary</p>
+			<p className='text-xl font-semibold text-emerald-400'>Resumo do Pedido</p>
 
 			<div className='space-y-4'>
 				<div className='space-y-2'>
 					<dl className='flex items-center justify-between gap-4'>
-						<dt className='text-base font-normal text-gray-300'>Original price</dt>
+						<dt className='text-base font-normal text-gray-300'>Preço Original</dt>
 						<dd className='text-base font-medium text-white'>${formattedSubtotal}</dd>
 					</dl>
 
@@ -75,7 +75,8 @@ const OrderSummary = () => {
 					whileTap={{ scale: 0.95 }}
 					onClick={handlePayment}
 				>
-					Proceed to Checkout
+					
+				Fazer o check-out
 				</motion.button>
 
 				<div className='flex items-center justify-center gap-2'>

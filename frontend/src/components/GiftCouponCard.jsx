@@ -34,7 +34,7 @@ const GiftCouponCard = () => {
 			<div className='space-y-4'>
 				<div>
 					<label htmlFor='voucher' className='mb-2 block text-sm font-medium text-gray-300'>
-						Do you have a voucher or gift card?
+						Adicione seus Voucher ou Cartões Presente
 					</label>
 					<input
 						type='text'
