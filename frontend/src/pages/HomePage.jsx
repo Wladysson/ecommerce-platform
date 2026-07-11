@@ -12,7 +12,7 @@ const categories = [
 	{ href: "/Placas de Video", name: "Placas de Video", imageUrl: "/plac.jpeg" },
 	{ href: "/Armazenamento", name: "Armazenamento", imageUrl: "/nvme.jpg" },
 	{ href: "/Memorias", name: "Memórias", imageUrl: "/memorias.png" },
-	{ href: "/Multiplas Comunicações", name: "Dispositivos IoT", imageUrl: "/roteador.jpg" },
+	{ href: "/Multiplas Comunicações", name: "Roteadores", imageUrl: "/roteador.jpg" },
 ];
 
 const HomePage = () => {

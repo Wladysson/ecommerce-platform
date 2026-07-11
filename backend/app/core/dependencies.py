@@ -25,7 +25,7 @@ async def get_current_user(
 
         payload = verify_access_token(access_token)
 
-        user_id = payload["user_id"]
+        user_id = int(payload["user_id"])
 
         stmt = select(User).where(User.id == user_id)
 

@@ -5,6 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
 from app.api.analytics import router as analytics_router
+from app.api import admin
 from app.api.auth import router as auth_router
 from app.api.cart import router as cart_router
 from app.api.coupon import router as coupon_router
@@ -30,6 +31,11 @@ app = FastAPI(
     title="E-Commerce API",
     version="1.0.0",
     lifespan=lifespan,
+)
+
+app.include_router(
+    admin.router,
+    prefix="/api"
 )
 
 app.add_middleware(
