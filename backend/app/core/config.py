@@ -14,6 +14,9 @@ class Settings(BaseSettings):
     cloudinary_cloud_name: str = ""
     cloudinary_api_key: str = ""
     cloudinary_api_secret: str = ""
+    
+    client_url: str = "http://localhost:5173"
+    
     allowed_origins: list[str] = []
 
     @property

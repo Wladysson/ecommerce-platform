@@ -86,8 +86,8 @@ class PaymentService:
             payment_method_types=["card"],
             line_items=line_items,
             mode="payment",
-            success_url=f"{settings.CLIENT_URL}/purchase-success?session_id={{CHECKOUT_SESSION_ID}}",
-            cancel_url=f"{settings.CLIENT_URL}/purchase-cancel",
+            success_url=f"{settings.client_url}/purchase-success?session_id={{CHECKOUT_SESSION_ID}}",
+            cancel_url=f"{settings.client_url}/purchase-cancel",
             discounts=discounts,
             metadata={
                 "userId": str(current_user.id),
