@@ -2,7 +2,7 @@ import json
 import random
 
 from fastapi import HTTPException
-from sqlalchemy import select
+from sqlalchemy import select, or_, case
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db.models.product import Product
@@ -47,6 +47,87 @@ class ProductService:
         )
 
         return serialized
+    
+    @staticmethod
+    async def search_products(
+        db: AsyncSession,
+        query: str
+    ):
+
+        query = query.strip()
+
+        result = await db.execute(
+
+            select(Product)
+
+            .where(
+
+                or_(
+
+                    Product.name.ilike(f"%{query}%"),
+
+                    Product.category.ilike(f"%{query}%"),
+
+                    Product.description.ilike(f"%{query}%")
+
+                )
+
+            )
+
+            .order_by(
+
+                case(
+
+                    (
+                        Product.name.ilike(f"{query}%"),
+                        0
+                    ),
+
+                    (
+                        Product.category.ilike(f"{query}%"),
+                        1
+                    ),
+
+                    else_=2
+
+                ),
+
+                Product.name.asc()
+
+            )
+
+        )
+
+        products = result.scalars().all()
+
+        return {
+            "products": products
+        }
+        
+    @staticmethod
+    async def get_product_details(
+        db: AsyncSession,
+        product_id: int
+    ):
+
+        result = await db.execute(
+            select(Product)
+            .where(
+                Product.id == product_id
+            )
+        )
+
+        product = result.scalar_one_or_none()
+
+        if not product:
+            raise HTTPException(
+                status_code=404,
+                detail="Product not found"
+            )
+
+        return {
+            "product": product.to_dict()
+        }
 
     @staticmethod
     async def create_product(

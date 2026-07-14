@@ -3,7 +3,9 @@ services:
   backend:
     build:
       context: ./backend
+
     container_name: ecommerce-backend
+
     restart: unless-stopped
 
     env_file:
@@ -19,7 +21,6 @@ services:
       - postgres
       - redis
 
-
   postgres:
     image: postgres:17
 
@@ -32,9 +33,11 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
 
+    ports:
+      - "5435:5432"
+
     volumes:
       - postgres_data:/var/lib/postgresql/data
-
 
   redis:
     image: redis:7-alpine
@@ -45,7 +48,6 @@ services:
 
     volumes:
       - redis_data:/data
-
 
   pgadmin:
     image: dpage/pgadmin4
@@ -64,9 +66,6 @@ services:
     depends_on:
       - postgres
 
-
 volumes:
-
   postgres_data:
-
   redis_data:

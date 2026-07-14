@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Query
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.dependencies import get_admin_user
@@ -37,6 +37,16 @@ async def get_products_by_category(
         db=db,
         category=category,
     )
+    
+@router.get("/search")
+async def search_products(
+    query: str = Query(..., min_length=1, max_length=100),
+    db: AsyncSession = Depends(get_db),
+):
+    return await ProductService.search_products(
+        db=db,
+        query=query.strip(),
+    )
 
 
 @router.get("/recommendations")
@@ -44,6 +54,16 @@ async def get_recommended_products(
     db: AsyncSession = Depends(get_db),
 ):
     return await ProductService.get_recommended_products(db)
+
+@router.get("/{product_id}")
+async def get_product_details(
+    product_id: int,
+    db: AsyncSession = Depends(get_db),
+):
+    return await ProductService.get_product_details(
+        db=db,
+        product_id=product_id,
+    )
 
 
 @router.post("/", status_code=201)

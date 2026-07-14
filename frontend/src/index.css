@@ -1,3 +1,41 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+.marquee{
+    overflow:hidden;
+    width:100%;
+}
+
+.marquee-content{
+
+    display:flex;
+
+    width:max-content;
+
+    animation: marquee 35s linear infinite;
+
+}
+
+.marquee:hover .marquee-content{
+
+    animation-play-state:paused;
+
+}
+
+@keyframes marquee{
+
+    from{
+
+        transform:translateX(0);
+
+    }
+
+    to{
+
+        transform:translateX(-50%);
+
+    }
+
+}
