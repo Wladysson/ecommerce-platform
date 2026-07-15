@@ -4,11 +4,11 @@ export default function ProductInfo({ product }) {
         <div className="space-y-4">
 
             <div>
-                <span className="text-sm text-gray-500">
+                <span className="text-sm text-gray-300">
                     {product.category}
                 </span>
 
-                <h1 className="text-3xl font-bold text-gray-900">
+                <h1 className="text-3xl font-bold text-white">
                     {product.name}
                 </h1>
             </div>
@@ -20,7 +20,7 @@ export default function ProductInfo({ product }) {
                     {"★★★★★"}
                 </div>
 
-                <span className="text-sm text-gray-500">
+                <span className="text-sm text-gray-300">
                     (0 avaliações)
                 </span>
 
@@ -29,7 +29,7 @@ export default function ProductInfo({ product }) {
 
             <div>
 
-                <span className="text-3xl font-bold text-blue-600">
+                <span className="text-3xl font-bold text-emerald-400">
                     R$ {Number(product.price).toFixed(2)}
                 </span>
 
@@ -38,14 +38,14 @@ export default function ProductInfo({ product }) {
 
             <div className="flex items-center gap-2">
 
-                <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm">
+                <span className="px-3 py-1 bg-emerald-600/20 text-emerald-400 rounded-full text-sm">
                     Em estoque
                 </span>
 
             </div>
 
 
-            <p className="text-gray-600 leading-relaxed">
+            <p className="text-gray-300 leading-relaxed">
                 {product.description}
             </p>
 

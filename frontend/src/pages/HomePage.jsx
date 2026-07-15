@@ -1,6 +1,4 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Search } from "lucide-react";
+import { useEffect } from "react";
 
 import CategoryItem from "../components/CategoryItem";
 import FeaturedProducts from "../components/FeaturedProducts";
@@ -11,6 +9,7 @@ import DoubleBanner from "../components/home/DoubleBanner";
 import Newsletter from "../components/home/Newsletter";
 
 import { useProductStore } from "../stores/useProductStore";
+
 
 const categories = [
 	{ href: "/Monitores", name: "Monitores", description: "Imagens Ultranítidas com Precisão.", imageUrl: "/mon.png" },
@@ -27,10 +26,9 @@ const categories = [
 	{ href: "/Acessorios", name: "Acessórios", description: "Para cada Personalidade.", imageUrl: "/acessorios.png" },
 ];
 
-const HomePage = () => {
-	const navigate = useNavigate();
 
-	const [search, setSearch] = useState("");
+const HomePage = () => {
+
 
 	const {
 		fetchFeaturedProducts,
@@ -38,108 +36,114 @@ const HomePage = () => {
 		loading,
 	} = useProductStore();
 
+
+
 	useEffect(() => {
+
 		fetchFeaturedProducts();
+
 	}, [fetchFeaturedProducts]);
 
-	const handleSearch = () => {
-		const text = search.trim();
 
-		if (!text) return;
-
-		navigate(`/search?query=${encodeURIComponent(text)}`);
-	};
 
 	return (
-		<div className="relative min-h-screen text-white overflow-hidden">
 
-			<div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-1 pb-16">
+		<div className="
+			relative
+			min-h-screen
+			text-white
+			overflow-hidden
+		">
 
-				<div className="max-w-lg mx-auto mb-8 relative">
 
-					<input
-						type="text"
-						value={search}
-						onChange={(e) => setSearch(e.target.value)}
-						onKeyDown={(e) => {
-							if (e.key === "Enter") {
-								handleSearch();
-							}
-						}}
-						placeholder="Pesquisar produtos..."
-						className="
-							w-full
-							pl-5
-							pr-12
-							py-3
-							rounded-full
-							bg-white
-							border
-							border-gray-300
-							text-gray-900
-							placeholder-gray-500
-							text-sm
-							focus:outline-none
-							focus:ring-2
-							focus:ring-emerald-500
-						"
-					/>
+			<div className="
+				relative
+				z-10
+				max-w-7xl
+				mx-auto
+				px-4
+				sm:px-6
+				lg:px-8
+				pt-8
+				pb-16
+			">
 
-					<button
-						onClick={handleSearch}
-						className="
-							absolute
-							right-3
-							top-1/2
-							-transform
-							-translate-y-1/2
-							text-gray-500
-							hover:text-emerald-600
-							transition
-						"
-					>
-						<Search size={20} />
-					</button>
 
-				</div>
+				<p className="
+					text-center
+					text-xl
+					text-gray-300
+					mb-12
+				">
 
-				<p className="text-center text-xl text-gray-300 mb-12">
 					Encontre tecnologia de alto desempenho para transformar sua rotina com mais produtividade, eficiência e conforto.
+
 				</p>
 
-				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+
+
+				<div className="
+					grid
+					grid-cols-1
+					sm:grid-cols-2
+					lg:grid-cols-3
+					gap-4
+				">
+
 
 					{categories.map((category) => (
 
 						<CategoryItem
+
 							key={category.name}
+
 							category={category}
+
 						/>
 
 					))}
 
+
 				</div>
 
+
+
 				{!loading && products.length > 0 && (
+
 					<FeaturedProducts
+
 						featuredProducts={products}
+
 					/>
+
 				)}
+
+
 
 			</div>
 
+
+
 			<PromoBanner />
+
 
 			<PromoGrid />
 
+
 			<BrandSection />
+
 
 			<DoubleBanner />
 
+
 			<Newsletter />
 
+
 		</div>
+
 	);
+
 };
+
 
 export default HomePage;

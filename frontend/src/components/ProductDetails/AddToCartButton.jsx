@@ -31,17 +31,19 @@ export default function AddToCartButton({ product }) {
                 items-center
                 justify-center
                 gap-3
-                bg-blue-600
-                hover:bg-blue-700
+                bg-emerald-600
+                hover:bg-emerald-500
                 text-white
                 font-semibold
-                py-4
-                rounded-xl
-                transition
+                h-12
+                px-4
+                rounded-lg
+                transition-colors
+                duration-300
             "
         >
 
-            <ShoppingCart size={22}/>
+            <ShoppingCart size={21}/>
 
             Adicionar ao carrinho
 

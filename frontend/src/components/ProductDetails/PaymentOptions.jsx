@@ -2,66 +2,58 @@ export default function PaymentOptions({ product }) {
 
     const price = Number(product.price);
 
-
     const installment = price / 10;
-
     const pixDiscount = price * 0.9;
 
 
     return (
-        <div className="border rounded-xl p-5 space-y-5 bg-white">
+        <div className="space-y-3">
 
-
-            <h2 className="text-xl font-semibold">
+            <h2 className="text-base font-semibold text-white">
                 Formas de pagamento
             </h2>
 
 
-            <div className="space-y-3">
+            <div className="space-y-2 text-sm">
 
 
-                <div className="border rounded-lg p-4">
+                <div className="flex justify-between items-center">
 
-                    <h3 className="font-medium">
+                    <span className="text-white">
                         Cartão de crédito
-                    </h3>
+                    </span>
 
-                    <p className="text-gray-600 text-sm">
-                        Até 10x sem juros de R$ {installment.toFixed(2)}
-                    </p>
+                    <span className="font-semibold text-white">
+                        10x R$ {installment.toFixed(2)}
+                    </span>
 
                 </div>
 
 
 
-                <div className="border rounded-lg p-4">
+                <div className="flex justify-between items-center">
 
-                    <h3 className="font-medium">
+                    <span className="text-white">
                         PIX
-                    </h3>
+                    </span>
 
-                    <p className="text-gray-600 text-sm">
-                        10% de desconto pagando à vista
-                    </p>
-
-
-                    <strong className="text-green-600">
+                    <span className="text-green-400 font-semibold">
                         R$ {pixDiscount.toFixed(2)}
-                    </strong>
+                    </span>
 
                 </div>
 
 
 
-                <div className="border rounded-lg p-4">
+                <div className="flex justify-between items-center">
 
-                    <h3 className="font-medium">
-                        Boleto bancário
-                    </h3>
+                    <span className="text-white">
+                        Boleto
+                    </span>
 
-                    <p className="text-gray-600 text-sm">
-                        Pagamento aprovado após compensação
-                    </p>
+                    <span className="text-gray-300 text-xs">
+                        Após compensação
+                    </span>
 
                 </div>
 
