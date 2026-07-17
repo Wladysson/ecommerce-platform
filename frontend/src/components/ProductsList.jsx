@@ -1,102 +1,127 @@
 import { motion } from "framer-motion";
-import { Trash, Star } from "lucide-react";
-import { useProductStore } from "../stores/useProductStore";
+import { Eye, Pencil, Package } from "lucide-react";
+
+import StockBadge from "./inventory/stock/StockBadge";
+import useInventoryStore from "../stores/useInventoryStore";
 
 const ProductsList = () => {
-	const { deleteProduct, toggleFeaturedProduct, products } = useProductStore();
-
-	console.log("products", products);
+	const { products, selectProduct } = useInventoryStore();
 
 	return (
 		<motion.div
-			className='bg-gray-800 shadow-lg rounded-lg overflow-hidden max-w-4xl mx-auto'
+			className="bg-gray-800 shadow-lg rounded-lg overflow-hidden"
 			initial={{ opacity: 0, y: 20 }}
 			animate={{ opacity: 1, y: 0 }}
-			transition={{ duration: 0.8 }}
+			transition={{ duration: 0.4 }}
 		>
-			<table className=' min-w-full divide-y divide-gray-700'>
-				<thead className='bg-gray-700'>
+			<table className="min-w-full divide-y divide-gray-700">
+				<thead className="bg-gray-700">
 					<tr>
-						<th
-							scope='col'
-							className='px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider'
-						>
-							Product
-						</th>
-						<th
-							scope='col'
-							className='px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider'
-						>
-							Price
-						</th>
-						<th
-							scope='col'
-							className='px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider'
-						>
-							Category
+						<th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase">
+							Produto
 						</th>
 
-						<th
-							scope='col'
-							className='px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider'
-						>
-							Featured
+						<th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase">
+							Categoria
 						</th>
-						<th
-							scope='col'
-							className='px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider'
-						>
-							Actions
+
+						<th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase">
+							Preço
+						</th>
+
+						<th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase">
+							Estoque
+						</th>
+
+						<th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase">
+							Status
+						</th>
+
+						<th className="px-6 py-3 text-center text-xs font-medium text-gray-300 uppercase">
+							Ações
 						</th>
 					</tr>
 				</thead>
 
-				<tbody className='bg-gray-800 divide-y divide-gray-700'>
-					{products?.map((product) => (
-						<tr key={product._id} className='hover:bg-gray-700'>
-							<td className='px-6 py-4 whitespace-nowrap'>
-								<div className='flex items-center'>
-									<div className='flex-shrink-0 h-10 w-10'>
-										<img
-											className='h-10 w-10 rounded-full object-cover'
-											src={product.image}
-											alt={product.name}
-										/>
-									</div>
-									<div className='ml-4'>
-										<div className='text-sm font-medium text-white'>{product.name}</div>
+				<tbody className="divide-y divide-gray-700">
+					{products.map((product) => (
+						<tr
+							key={product.id}
+							className="hover:bg-gray-700 transition"
+						>
+							<td className="px-6 py-4">
+								<div className="flex items-center gap-4">
+									<img
+										src={product.image}
+										alt={product.name}
+										className="w-12 h-12 rounded-lg object-cover"
+									/>
+
+									<div>
+										<h3 className="text-white font-medium">
+											{product.name}
+										</h3>
+
+										<p className="text-sm text-gray-400">
+											ID: {product.id}
+										</p>
 									</div>
 								</div>
 							</td>
-							<td className='px-6 py-4 whitespace-nowrap'>
-								<div className='text-sm text-gray-300'>${product.price.toFixed(2)}</div>
+
+							<td className="px-6 py-4 text-gray-300">
+								{product.category}
 							</td>
-							<td className='px-6 py-4 whitespace-nowrap'>
-								<div className='text-sm text-gray-300'>{product.category}</div>
+
+							<td className="px-6 py-4 text-white">
+								R$ {Number(product.price).toFixed(2)}
 							</td>
-							<td className='px-6 py-4 whitespace-nowrap'>
-								<button
-									onClick={() => toggleFeaturedProduct(product._id)}
-									className={`p-1 rounded-full ${
-										product.isFeatured ? "bg-yellow-400 text-gray-900" : "bg-gray-600 text-gray-300"
-									} hover:bg-yellow-500 transition-colors duration-200`}
-								>
-									<Star className='h-5 w-5' />
-								</button>
+
+							<td className="px-6 py-4">
+								<div className="flex items-center gap-2 text-white">
+									<Package size={16} />
+									{product.stock}
+								</div>
 							</td>
-							<td className='px-6 py-4 whitespace-nowrap text-sm font-medium'>
-								<button
-									onClick={() => deleteProduct(product._id)}
-									className='text-red-400 hover:text-red-300'
-								>
-									<Trash className='h-5 w-5' />
-								</button>
+
+							<td className="px-6 py-4">
+								<StockBadge stock={product.stock} />
+							</td>
+
+							<td className="px-6 py-4">
+								<div className="flex justify-center gap-2">
+									<button
+										onClick={() => selectProduct(product)}
+										className="p-2 rounded-lg bg-sky-500/20 text-sky-400 hover:bg-sky-500/30 transition"
+									>
+										<Eye size={18} />
+									</button>
+
+									<button
+										onClick={() => selectProduct(product)}
+										className="p-2 rounded-lg bg-amber-500/20 text-amber-400 hover:bg-amber-500/30 transition"
+									>
+										<Pencil size={18} />
+									</button>
+								</div>
 							</td>
 						</tr>
 					))}
+
+					{products.length === 0 && (
+						<tr>
+							<td
+								colSpan={6}
+								className="py-12 text-center text-gray-400"
+							>
+								Nenhum produto encontrado.
+							</td>
+						</tr>
+					)}
 				</tbody>
 			</table>
 		</motion.div>
 	);
 };
+
 export default ProductsList;
