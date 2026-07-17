@@ -1,6 +1,7 @@
 from datetime import datetime
+from decimal import Decimal
 
-from sqlalchemy import Boolean, DateTime, Integer, Numeric, String, Text
+from sqlalchemy import Boolean, DateTime, Integer, JSON, Numeric, String, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db.models.base import Base
@@ -26,7 +27,7 @@ class Product(Base):
         nullable=False,
     )
 
-    price: Mapped[float] = mapped_column(
+    price: Mapped[Decimal] = mapped_column(
         Numeric(10, 2),
         nullable=False,
     )
@@ -38,8 +39,26 @@ class Product(Base):
 
     category: Mapped[str] = mapped_column(
         String(100),
-        nullable=False,
         index=True,
+        nullable=False,
+    )
+
+    brand: Mapped[str] = mapped_column(
+        String(120),
+        default="",
+        nullable=False,
+    )
+
+    stock: Mapped[int] = mapped_column(
+        Integer,
+        default=0,
+        nullable=False,
+    )
+
+    specifications: Mapped[dict] = mapped_column(
+        JSON,
+        default=dict,
+        nullable=False,
     )
 
     is_featured: Mapped[bool] = mapped_column(
@@ -73,6 +92,16 @@ class Product(Base):
         cascade="all, delete-orphan",
     )
 
+    @property
+    def inventory_status(self) -> str:
+        if self.stock == 0:
+            return "out_of_stock"
+
+        if self.stock <= 10:
+            return "low_stock"
+
+        return "in_stock"
+
     def to_dict(self):
 
         return {
@@ -82,6 +111,10 @@ class Product(Base):
             "price": float(self.price),
             "image": self.image,
             "category": self.category,
+            "brand": self.brand,
+            "stock": self.stock,
+            "status": self.inventory_status,
+            "specifications": self.specifications,
             "isFeatured": self.is_featured,
             "createdAt": self.created_at.isoformat(),
             "updatedAt": self.updated_at.isoformat(),

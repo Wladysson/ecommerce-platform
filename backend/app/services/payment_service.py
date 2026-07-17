@@ -12,7 +12,7 @@ from app.db.models.coupon import Coupon
 from app.db.models.order import Order
 from app.db.models.order_item import OrderItem
 from app.db.models.user import User
-from app.integrations.stripe import stripe
+from app.integration.stripe import stripe
 
 
 class PaymentService:

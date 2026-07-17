@@ -1,91 +1,57 @@
-import { useEffect, useState } from "react";
-import adminService from "../services/adminService";
+import { useEffect } from "react";
+import useInventoryStore from "../stores/useInventoryStore";
 
 
 const useInventory = () => {
 
 
-	const [inventory,setInventory] = useState(null);
-	const [lowStock,setLowStock] = useState([]);
-	const [loading,setLoading] = useState(true);
+	const {
+		products,
+		selectedProduct,
+		inventoryStats,
+		loading,
+		error,
+		filters,
+		fetchInventory,
+		selectProduct,
+		updateProduct,
+		setFilters,
+		clearFilters,
+	} = useInventoryStore();
 
 
 
-	const loadInventory = async()=>{
+	useEffect(() => {
 
-		try {
+		fetchInventory();
 
-			setLoading(true);
-
-
-			const [
-				inventoryData,
-				lowStockData
-			] = await Promise.all([
-
-				adminService.getInventory(),
-
-				adminService.getLowStockProducts()
-
-			]);
-
-
-
-			setInventory(inventoryData);
-
-			setLowStock(lowStockData);
-
-
-
-		} finally {
-
-			setLoading(false);
-
-		}
-
-	};
-
-
-
-	const updateStock = async(productId,quantity)=>{
-
-
-		const response =
-			await adminService.updateStock(
-				productId,
-				quantity
-			);
-
-
-
-		await loadInventory();
-
-
-		return response;
-
-	};
-
-
-
-	useEffect(()=>{
-
-		loadInventory();
-
-	},[]);
+	}, [fetchInventory]);
 
 
 
 	return {
 
-		inventory,
+		products,
 
-		lowStock,
+		selectedProduct,
+
+		inventoryStats,
 
 		loading,
 
-		refresh:loadInventory,
+		error,
 
-		updateStock,
+		filters,
+
+		fetchInventory,
+
+		selectProduct,
+
+		updateProduct,
+
+		setFilters,
+
+		clearFilters,
 
 	};
 

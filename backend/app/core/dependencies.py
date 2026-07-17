@@ -1,5 +1,5 @@
 from fastapi import Depends, HTTPException, Request, status
-from jose import JWTError, ExpiredSignatureError
+from jose import ExpiredSignatureError, JWTError
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -18,7 +18,7 @@ async def get_current_user(
     if not access_token:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Unauthorized - No access token provided",
+            detail="Access token not found",
         )
 
     try:
@@ -27,41 +27,47 @@ async def get_current_user(
 
         user_id = int(payload["user_id"])
 
-        stmt = select(User).where(User.id == user_id)
-
-        result = await db.execute(stmt)
-
-        user = result.scalar_one_or_none()
-
-        if not user:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="User not found",
-            )
-
-        return user
-
     except ExpiredSignatureError:
+
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Unauthorized - Access token expired",
+            detail="Access token expired",
         )
 
     except JWTError:
+
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Unauthorized - Invalid access token",
+            detail="Invalid access token",
         )
+
+    result = await db.execute(
+        select(User).where(
+            User.id == user_id
+        )
+    )
+
+    user = result.scalar_one_or_none()
+
+    if user is None:
+
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="User not found",
+        )
+
+    return user
 
 
 async def get_admin_user(
     current_user: User = Depends(get_current_user),
 ) -> User:
 
-    if current_user.role != "admin":
+    if current_user.role.lower() != "admin":
+
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="Access denied - Admin only",
+            detail="Administrator permission required",
         )
 
     return current_user

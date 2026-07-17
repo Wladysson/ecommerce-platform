@@ -42,7 +42,11 @@ import OrderTable from "../components/admin/dashboard/orders/OrderTable";
 import AlertsPanel from "../components/admin/dashboard/alerts/AlertsPanel";
 import SystemNotifications from "../components/admin/dashboard/alerts/SystemNotifications";
 
+import InventoryHeader from "../components/inventory/InventoryHeader";
+import InventoryFilters from "../components/inventory/InventoryFilters";
+import InventoryStats from "../components/inventory/InventoryStats";
 
+import useInventory from "../hooks/useInventory";
 import useDashboardAnalytics from "../hooks/useDashboardAnalytics";
 
 
@@ -56,14 +60,14 @@ const tabs = [
 
 	{
 		id:"create",
-		label:"Criar Produto",
+		label:"Cadastramento",
 		icon:PlusCircle,
 	},
 
 
 	{
 		id:"products",
-		label:"Produtos",
+		label:"Estoque",
 		icon:ShoppingBasket,
 	},
 
@@ -82,6 +86,10 @@ const AdminPage = () => {
 		analytics,
 		loading
 	}=useDashboardAnalytics();
+
+	const {
+		inventoryStats
+	}=useInventory();
 
 
 
@@ -196,13 +204,9 @@ const AdminPage = () => {
 						<DashboardFilters />
 
 
-
 						<MetricsGrid
-							data={analytics || {}}
+							analytics={analytics?.metrics || {}}
 						/>
-
-
-
 
 						<div className="grid gap-8 lg:grid-cols-2">
 
@@ -320,10 +324,34 @@ const AdminPage = () => {
 
 				)}
 
-				{activeTab==="products" && (
+				{activeTab === "products" && (
+					<div className="space-y-8">
+						<InventoryHeader />
 
-					<ProductsList />
+						<InventoryFilters />
 
+						<InventoryStats
+
+							totalProducts={
+								inventoryStats?.totalProducts
+							}
+
+							totalStock={
+								inventoryStats?.totalStock
+							}
+
+							lowStock={
+								inventoryStats?.lowStock
+							}
+
+							outOfStock={
+								inventoryStats?.outOfStock
+							}
+
+						/>
+
+						<ProductsList />
+					</div>
 				)}
 
 
